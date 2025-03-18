@@ -18,7 +18,7 @@ const AddTest = () => {
     const [address1, setAddress1] = useState('')
     const [address2, setAddress2] = useState('')
 
-    const {backendUrl, adminToken} = useContext(AdminContext)
+    const {backendUrl, aToken} = useContext(AdminContext)
 
     const onSubmitHandler = async (event) => {
         event.preventDefault()
@@ -45,17 +45,27 @@ const AddTest = () => {
             formData.forEach((value, key) => {
                 console.log(`${key} : ${value}`)
             })
-
-            const {data} = await axios.post(backendUrl + '/api/admin/add-doctor', formData, {headers:{aToken}})
+            
+            const {data} = await axios.post(backendUrl + '/api/admin/add-doctor', formData, {headers: {aToken}})
 
             if(data.success){
                 toast.success("Doctor Added")
+                setDocImg(false)
+                setName('')
+                setPassword('')
+                setEmail('')
+                setAddress1('')
+                setAddress2('')
+                setAbout('')
+                setFees('')
+                setDegree('')
             } else {
                 toast.error("Faied. Try Again")
             }
 
         } catch (error) {
-            
+            toast.error(error.message)
+            console.log(error)
         }
     }
 
